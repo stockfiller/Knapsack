@@ -6,3 +6,4 @@ coverage.clover
 coverage.xml
 
 phpunit.xml
+.phpunit.result.cache

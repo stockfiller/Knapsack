@@ -1,10 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit bootstrap="vendor/autoload.php">
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd" bootstrap="vendor/autoload.php"
+         colors="true" executionOrder="random" beStrictAboutChangesToGlobalState="true"
+         beStrictAboutResourceUsageDuringSmallTests="true" beStrictAboutOutputDuringTests="true" testdox="true">
     <testsuites>
-        <testsuite>
+        <testsuite name="Scenarions">
             <directory>tests/scenarios</directory>
         </testsuite>
     </testsuites>
+    <logging/>
 </phpunit>
 

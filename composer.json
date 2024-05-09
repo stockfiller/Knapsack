@@ -33,7 +33,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "DusanKasan\\Knapsack\\Tests\\Helpers\\": "tests/helpers/"
+      "DusanKasan\\Knapsack\\Tests\\Helpers\\": "tests/helpers/",
+      "DusanKasan\\Knapsack\\Tests\\Scenarios\\": "tests/scenarios/"
     }
   }
 }
