@@ -356,7 +356,9 @@ function sort($collection, callable $function)
     uasort(
         $array,
         function ($a, $b) use ($function) {
-            return $function($a[1], $b[1], $a[0], $b[0]);
+            $result = $function($a[1], $b[1], $a[0], $b[0]);
+
+            return is_numeric($result) ? $result : ($result ? 1 : -1);
         }
     );
 
