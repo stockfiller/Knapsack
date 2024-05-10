@@ -30,5 +30,43 @@ class CollectionTest extends TestCase
         $this->assertEquals(2, $s4->size());
         $this->assertEquals([1], $s4->first()->toArray());
         $this->assertEquals([3 => 2], $s4->second()->toArray());
+
+        // same size partition
+        $collection2 = Collection::from([1, 2, 3, 4, 5, 6, 7, 8,]);
+        $s5 = $collection2->partition(4);
+        $this->assertEquals(2, $s5->size());
+        $this->assertEquals([1,2,3,4], $s5->first()->toArray());
+        $this->assertEquals([4 => 5, 5 => 6, 6 => 7, 7 => 8], $s5->second()->toArray());
+
+        // same size partition with map, mapcat
+        $iterator = new \ArrayIterator([1, 2, 3 => 3, 7 => [4,5,6,7,8], 9, 10, 11, 12]);
+        $collection3 = Collection::from($iterator);
+        $s5 = $collection3
+            ->partition(4)
+            ->map(fn (Collection $numbers) => $numbers->values()->toArray())
+            ->mapcat(function (array $numbers) {
+                $data = [];
+                if (empty($numbers)) {
+                    $data[] = "empty";
+                }
+
+                foreach ($numbers as $number) {
+                    if (is_array($number)) {
+                        $data = [
+                            ...$data,
+                            ...$number
+                        ];
+                    } else {
+                        $data[] = $number;
+                    }
+                }
+
+                return $data;
+            })
+            ->values()
+            ->map(fn (int $number) => (string) $number)
+            ->toArray();
+
+        $this->assertSame(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], $s5);
     }
 }
