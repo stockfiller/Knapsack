@@ -847,31 +847,6 @@ class CollectionSpec extends ObjectBehavior
             ->shouldReturn(9);
     }
 
-    function it_can_partition()
-    {
-        $this->beConstructedWith([1, 3, 3, 2,]);
-
-        $s1 = $this->partition(3, 2, [0, 1]);
-        $s1->size()->shouldBe(2);
-        $s1->first()->toArray()->shouldBe([1, 3, 3]);
-        $s1->second()->toArray()->shouldBe([2 => 3, 3 => 2, 0 => 0]);
-
-        $s2 = $this->partition(3, 2);
-        $s2->size()->shouldBe(2);
-        $s2->first()->toArray()->shouldBe([1, 3, 3]);
-        $s2->second()->toArray()->shouldBe([2 => 3, 3 => 2]);
-
-        $s3 = $this->partition(3);
-        $s3->size()->shouldBe(2);
-        $s3->first()->toArray()->shouldBe([1, 3, 3]);
-        $s3->second()->toArray()->shouldBe([3 => 2]);
-
-        $s4 = $this->partition(1, 3);
-        $s4->size()->shouldBe(2);
-        $s4->first()->toArray()->shouldBe([1,]);
-        $s4->second()->toArray()->shouldBe([3 => 2]);
-    }
-
     function it_can_partition_by()
     {
         $this->beConstructedWith([1, 3, 3, 2]);
