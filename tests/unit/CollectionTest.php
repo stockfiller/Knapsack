@@ -3,6 +3,8 @@
 namespace DusanKasan\Knapsack\Tests\Unit;
 
 use DusanKasan\Knapsack\Collection;
+use DusanKasan\Knapsack\Tests\Helpers\FastCar;
+use DusanKasan\Knapsack\Tests\Helpers\Part;
 use PHPUnit\Framework\TestCase;
 
 final class CollectionTest extends TestCase
@@ -42,5 +44,46 @@ final class CollectionTest extends TestCase
             ->partition(4)
             ->each(fn (Collection $partition) => $this->assertEquals(4, $partition->size()))
             ->realize();
+    }
+
+    public function testMapCat()
+    {
+        $cars = [
+            new FastCar('Ferrari', [new Part('Engine'), new Part('Body'), new Part('Wheels')]),
+            new FastCar('Porche', [new Part('Spoiler'), new Part('Mirrors'), new Part('Seats'), new Part("Windshield")]),
+        ];
+
+        // test case 1: everything is as expected
+        $allParts = Collection::from($cars)
+            ->mapcat(fn ($car) => Collection::from($car->parts)->map(fn ($p) => $p->partName))
+            ->values()
+            ->map(fn ($name) => $name)
+            ->toArray();
+
+        $this->assertEquals(["Engine", "Body", "Wheels", "Spoiler", "Mirrors", "Seats", "Windshield"], $allParts);
+
+        // test case 2: well, unsure if its expected behavior
+        $lastParts = Collection::from($cars)
+            ->mapcat(fn ($car) => Collection::from($car->parts)->map(fn ($p) => $p->partName))
+            // notice that this step does not have ->values() . Due to this it replaces values at the same index
+            ->map(fn ($name) => $name)
+            ->toArray();
+
+        $this->assertEquals(["Spoiler", "Mirrors", "Seats", "Windshield"], $lastParts);
+
+
+        // test case 3: unexpected behavior
+        $collection = Collection::from($cars)
+            ->mapcat(fn ($car) => Collection::from($car->parts)->map(fn ($p) => $p->partName))
+            ->realize();
+        $allValuesWithRealize = $collection->map(fn ($name) => $name)->toArray();
+        $this->assertEquals(["Spoiler", "Mirrors", "Seats", "Windshield"], $allValuesWithRealize);
+
+
+        // test case 4: lets verify if indexBy helps
+        $result4 = Collection::from($cars)
+            ->mapcat(fn ($car) => Collection::from($car->parts)->map(fn ($p) => $p->partName)->indexBy(fn ($name) => $name))
+            ->toArray();
+        $this->assertEquals(["Engine" => "Engine", "Body" => "Body", "Wheels" => "Wheels", "Spoiler" => "Spoiler", "Mirrors" => "Mirrors", "Seats" => "Seats", "Windshield" => "Windshield"], $result4);
     }
 }
