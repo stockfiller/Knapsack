@@ -1,0 +1,13 @@
+# Set CODEOWNERS for the entire repository
+* @stockfiller/backend
+
+Dockerfile @stockfiller/infra
+*.Dockerfile @stockfiller/infra
+Dockerfile.* @stockfiller/infra
+.dockerignore @stockfiller/infra
+docker-compose*.yml @stockfiller/infra
+/.circleci/ @stockfiller/infra
+/.github/CODEOWNERS @stockfiller/infra
+/.github/dependabot.yml @stockfiller/infra
+/.github/workflows/ @stockfiller/infra
+/deploy/ @stockfiller/infra
